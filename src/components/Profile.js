@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 export default function Profile({ setProfilePic, profilePic, darkMode }) {
-  const [user, setUser ] = useState({
+  const [user, setUser] = useState({
     username: "",
     email: "",
     password: "",
@@ -12,7 +12,7 @@ export default function Profile({ setProfilePic, profilePic, darkMode }) {
     profilePic: "",
   });
 
-  const [originalUser , setOriginalUser ] = useState({}); // Store original user data
+  const [originalUser, setOriginalUser] = useState({}); // Store original user data
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -22,15 +22,15 @@ export default function Profile({ setProfilePic, profilePic, darkMode }) {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    const loggedInUser  = JSON.parse(localStorage.getItem("loggedInUser  "));
-    if (loggedInUser ) {
-      setUser (loggedInUser );
-      setOriginalUser (loggedInUser ); // Set original user data
+    const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser   "));
+    if (loggedInUser) {
+      setUser(loggedInUser);
+      setOriginalUser(loggedInUser); // Set original user data
     }
   }, []);
 
   const handleChange = (e) => {
-    setUser ({ ...user, [e.target.name]: e.target.value });
+    setUser({ ...user, [e.target.name]: e.target.value });
   };
 
   const handleImageChange = (e) => {
@@ -38,8 +38,8 @@ export default function Profile({ setProfilePic, profilePic, darkMode }) {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setUser ((prevUser ) => ({
-          ...prevUser ,
+        setUser((prevUser) => ({
+          ...prevUser,
           profilePic: reader.result,
         }));
         setProfilePic(reader.result); // Update profile picture in Navbar
@@ -62,7 +62,9 @@ export default function Profile({ setProfilePic, profilePic, darkMode }) {
 
   const handleSave = () => {
     // Confirm before saving changes
-    const confirmSave = window.confirm("Are you sure you want to save changes?");
+    const confirmSave = window.confirm(
+      "Are you sure you want to save changes?"
+    );
     if (!confirmSave) {
       return; // User canceled the save operation
     }
@@ -78,7 +80,7 @@ export default function Profile({ setProfilePic, profilePic, darkMode }) {
         return;
       }
 
-      if (oldPassword !== originalUser .password) {
+      if (oldPassword !== originalUser.password) {
         setMessage("Old password is incorrect.");
         return;
       }
@@ -90,7 +92,7 @@ export default function Profile({ setProfilePic, profilePic, darkMode }) {
       user.password = newPassword;
     }
 
-    localStorage.setItem("loggedInUser  ", JSON.stringify(user));
+    localStorage.setItem("loggedInUser   ", JSON.stringify(user));
 
     let users = JSON.parse(localStorage.getItem("users")) || [];
     let updatedUsers = users.map((u) => (u.email === user.email ? user : u));
@@ -104,7 +106,9 @@ export default function Profile({ setProfilePic, profilePic, darkMode }) {
 
   return (
     <div
-      className={`container-fluid min-vh-100 d-flex flex-column ${darkMode ? "bg-dark text-white" : "bg-light text-dark"}`}
+      className={`container-fluid min-vh-100 d-flex flex-column ${
+        darkMode ? "bg-dark text-white" : "bg-light text-dark"
+      }`}
     >
       <div className="container mt-5 pt-5 pb-5">
         <h2 className="text-center mb-4">Edit Profile</h2>
@@ -112,7 +116,9 @@ export default function Profile({ setProfilePic, profilePic, darkMode }) {
         {/* Profile Picture Section */}
         <div className="text-center mb-4">
           <img
-            src={user.profilePic || profilePic || "https://via.placeholder.com/100"}
+            src={
+              user.profilePic || profilePic || "https://via.placeholder.com/100"
+            }
             alt="Profile"
             className="rounded-circle mb-3"
             width="120"
@@ -124,7 +130,9 @@ export default function Profile({ setProfilePic, profilePic, darkMode }) {
             accept="image/*"
             onChange={handleImageChange}
           />
-          <small className="d-block mt-2 text-muted">Change Profile Picture</small>
+          <small className="d-block mt-2 text-muted">
+            Change Profile Picture
+          </small>
         </div>
 
         {message && <div className="alert alert-info mb-4">{message}</div>}
@@ -149,6 +157,70 @@ export default function Profile({ setProfilePic, profilePic, darkMode }) {
               value={user.email}
               onChange={handleChange}
             />
+          </div>
+        </div>
+
+        <div className="mb-4">
+          <h4>Change Password</h4>
+          <label className="form-label">Old Password</label>
+          <div className="input-group">
+            <input
+              type={showOldPassword ? "text" : "password"}
+              className="form-control"
+              value={oldPassword}
+              onChange={(e) => setOldPassword(e.target.value)}
+            />
+            <button
+              className={`btn ${
+                darkMode ? "btn-light" : "btn-outline-secondary"
+              }`}
+              type="button"
+              onClick={() => setShowOldPassword(!showOldPassword)}
+            >
+              {showOldPassword ? "Hide" : "Show"}
+            </button>
+          </div>
+        </div>
+
+        <div className="mb-4">
+          <label className="form-label">New Password</label>
+          <div className="input-group">
+            <input
+              type={showNewPassword ? "text" : "password"}
+              className="form-control"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+            />
+            <button
+              className={`btn ${
+                darkMode ? "btn-light" : "btn-outline-secondary"
+              }`}
+              type="button"
+              onClick={() => setShowNewPassword(!showNewPassword)}
+            >
+              {showNewPassword ? "Hide" : "Show"}
+            </button>
+          </div>
+        </div>
+
+        <div className="mb-4">
+          <label className="form-label">Confirm New Password</label>
+          <div className="input-group">
+            <input
+              type={showConfirmPassword ? "text" : "password"}
+              className="form-control"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+            <button
+              className={`btn ${
+                darkMode ? "btn-light" : "btn-outline-secondary"
+              }`}
+              type="button"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+            >
+              {showConfirmPassword ? "Hide" : "Show"}
+            </button>
           </div>
         </div>
 
@@ -197,66 +269,11 @@ export default function Profile({ setProfilePic, profilePic, darkMode }) {
           </div>
         </div>
 
-        <div className="mb-4">
-          <h4>Change Password</h4>
-          <label className="form-label">Old Password</label>
-          <div className="input-group">
-            <input
-              type={showOldPassword ? "text" : "password"}
-              className="form-control"
-              value={oldPassword}
-              onChange={(e) => setOldPassword(e.target.value)}
-            />
-            <button
-              className={`btn ${darkMode ? "btn-light" : "btn-outline-secondary"}`}
-              type="button"
-              onClick={() => setShowOldPassword(!showOldPassword)}
-            >
-              {showOldPassword ? "Hide" : "Show"}
-            </button>
-          </div>
-        </div>
-
-        <div className="mb-4">
-          <label className="form-label">New Password</label>
-          <div className="input-group">
-            <input
-              type={showNewPassword ? "text" : "password"}
-              className="form-control"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-            />
-            <button
-              className={`btn ${darkMode ? "btn-light" : "btn-outline-secondary"}`}
-              type="button"
-              onClick={() => setShowNewPassword(!showNewPassword)}
-            >
-              {showNewPassword ? "Hide" : "Show"}
-            </button>
-          </div>
-        </div>
-
-        <div className="mb-4">
-          <label className="form-label">Confirm New Password</label>
-          <div className="input-group">
-            <input
-              type={showConfirmPassword ? "text" : "password"}
-              className="form-control"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-            />
-            <button
-              className={`btn ${darkMode ? "btn-light" : "btn-outline-secondary"}`}
-              type="button"
-              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-            >
-              {showConfirmPassword ? "Hide" : "Show"}
-            </button>
-          </div>
-        </div>
-
         <div className="text-center">
-          <button className={`btn ${darkMode ? "btn-light" : "btn-primary"} w-20`} onClick={handleSave}>
+          <button
+            className={`btn ${darkMode ? "btn-light" : "btn-primary"} w-20`}
+            onClick={handleSave}
+          >
             Save Changes
           </button>
         </div>
