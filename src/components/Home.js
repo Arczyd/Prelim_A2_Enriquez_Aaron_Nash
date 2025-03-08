@@ -1,49 +1,20 @@
 import React from "react";
 
 export default function Home() {
-  const user = JSON.parse(localStorage.getItem("loggedInUser"));
-
-  const handleLogout = () => {
-    localStorage.removeItem("loggedInUser");
-    window.location.reload();
-  };
-
   return (
-    <div>
-      {/* Navbar */}
-      <nav className="navbar navbar-expand-lg navbar-light bg-light px-4">
-        <a className="navbar-brand" href="#">
-          MyApp
-        </a>
-        <ul className="navbar-nav ml-auto">
-          <li className="nav-item">
-            <a className="nav-link" href="#">
-              Home
-            </a>
-          </li>
-          <li className="nav-item">
-            <a className="nav-link" href="#">
-              Profile
-            </a>
-          </li>
-          <li className="nav-item">
-            <a className="nav-link" href="#">
-              Settings
-            </a>
-          </li>
-          <li className="nav-item">
-            <button className="btn btn-danger" onClick={handleLogout}>
-              Logout
-            </button>
-          </li>
-        </ul>
-      </nav>
-
-      {/* Welcome Message */}
-      <div className="container text-center mt-5">
-        <h2>Welcome, {user.username}!</h2>
-        <p>This is your dashboard.</p>
-      </div>
+    <div className="container pt-5 mt-5">
+      {" "}
+      {/* Adding both pt-5 and mt-5 */}
+      <h2 className="text-center">About AST</h2>
+      <p className="text-center">
+        "Discover a world like no other through a one-of-a-kind, interactive
+        journey. <br /> At AST, our mission is to bring joy and laughter to
+        everyone we encounter. <br /> We strive to create unforgettable moments
+        and exciting surprises that people from all corners of the globe can
+        share and enjoy together. <br /> By offering experiences that captivate
+        and connect individuals, we aim to make a positive impact on people's
+        lives, leaving them with lasting smiles and cherished memories."
+      </p>
     </div>
   );
 }

@@ -1,91 +1,76 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-export default function Register({ switchMode }) {
+export default function Register() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const navigate = useNavigate();
 
-  const validateEmail = (email) => /\S+@\S+\.\S+/.test(email);
-
-  const handleRegister = () => {
-    let users = JSON.parse(localStorage.getItem("users")) || [];
-
-    if (!username || !email || !password || !confirmPassword) {
-      alert("Please fill in all fields.");
-      return;
-    }
-
-    if (!validateEmail(email)) {
-      alert("Invalid email format.");
-      return;
-    }
-
-    if (password.length < 12) {
-      alert("Password must be at least 12 characters.");
-      return;
-    }
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
     if (password !== confirmPassword) {
-      alert("Passwords do not match.");
+      alert("Passwords do not match!");
       return;
     }
 
-    if (
-      users.some((user) => user.email === email || user.username === username)
-    ) {
-      alert("Account already exists. Try a different email or username.");
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+    if (users.some((user) => user.email === email)) {
+      alert("Email is already taken!");
       return;
     }
 
-    users.push({ username, email, password });
-    localStorage.setItem("users", JSON.stringify(users));
-    alert("Registration successful! You can now login.");
-    switchMode();
+    const newUser = { username, email, password };
+    localStorage.setItem("users", JSON.stringify([...users, newUser]));
+    alert("Account created! Please log in.");
+    navigate("/login");
   };
 
   return (
-    <div className="container mt-5">
-      <div className="card p-4 shadow">
-        <h3 className="text-center">Register</h3>
+    <div className="d-flex flex-column align-items-center justify-content-center vh-100 bg-light">
+      <h2 className="fw-bold mb-4">Register</h2>
+      <form className="w-25" onSubmit={handleSubmit}>
         <input
           type="text"
-          className="form-control my-2"
+          className="form-control mb-3"
           placeholder="Username"
+          required
+          value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
         <input
           type="email"
-          className="form-control my-2"
+          className="form-control mb-3"
           placeholder="Email"
+          required
+          value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
         <input
           type="password"
-          className="form-control my-2"
-          placeholder="Password (12+ characters)"
+          className="form-control mb-3"
+          placeholder="Password"
+          required
+          value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
         <input
           type="password"
-          className="form-control my-2"
+          className="form-control mb-3"
           placeholder="Confirm Password"
+          required
+          value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
         />
-        <button className="btn btn-primary w-100 mt-2" onClick={handleRegister}>
+        <button type="submit" className="btn btn-primary w-100 rounded-pill">
           Register
         </button>
-        <p className="text-center mt-3">
-          Already have an account?{" "}
-          <span
-            className="text-primary"
-            style={{ cursor: "pointer" }}
-            onClick={switchMode}
-          >
-            Login
-          </span>
-        </p>
-      </div>
+      </form>
+      <p className="mt-3">
+        Already have an account? <a href="/login">Login</a>
+      </p>
     </div>
   );
 }

@@ -1,66 +1,56 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-export default function Login({ switchMode }) {
-  const [identifier, setIdentifier] = useState(""); // Username or Email
+export default function Login({ onLogin }) {
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
-  const handleLogin = () => {
-    let users = JSON.parse(localStorage.getItem("users")) || [];
-
-    if (!identifier || !password) {
-      alert("Please fill in all fields.");
-      return;
-    }
-
+  const handleLogin = (e) => {
+    e.preventDefault();
+    const users = JSON.parse(localStorage.getItem("users")) || [];
     const user = users.find(
-      (user) => user.email === identifier || user.username === identifier
+      (u) =>
+        (u.email === email || u.username === email) && u.password === password
     );
 
-    if (!user) {
-      alert("Account not found.");
-      return;
+    if (user) {
+      localStorage.setItem("loggedInUser", JSON.stringify(user)); // Save logged-in user
+      onLogin(user);
+      alert("Login successful!"); // ✅ Show successful login popup
+      navigate("/home");
+    } else {
+      alert("Invalid email/username or password.");
     }
-
-    if (user.password !== password) {
-      alert("Incorrect password.");
-      return;
-    }
-
-    localStorage.setItem("loggedInUser", JSON.stringify(user));
-    alert("Login successful!");
-    window.location.reload();
   };
 
   return (
-    <div className="container mt-5">
-      <div className="card p-4 shadow">
-        <h3 className="text-center">Login</h3>
+    <div className="d-flex flex-column align-items-center justify-content-center vh-100 bg-light">
+      <h2 className="fw-bold mb-4">Login</h2>
+      <form className="w-25" onSubmit={handleLogin}>
         <input
           type="text"
-          className="form-control my-2"
+          className="form-control mb-3"
           placeholder="Username or Email"
-          onChange={(e) => setIdentifier(e.target.value)}
+          required
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
         />
         <input
           type="password"
-          className="form-control my-2"
+          className="form-control mb-3"
           placeholder="Password"
+          required
+          value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button className="btn btn-success w-100 mt-2" onClick={handleLogin}>
+        <button type="submit" className="btn btn-primary w-100 rounded-pill">
           Login
         </button>
-        <p className="text-center mt-3">
-          Don't have an account?{" "}
-          <span
-            className="text-primary"
-            style={{ cursor: "pointer" }}
-            onClick={switchMode}
-          >
-            Register
-          </span>
-        </p>
-      </div>
+      </form>
+      <p className="mt-3">
+        Don't have an account? <a href="/register">Register</a>
+      </p>
     </div>
   );
 }
