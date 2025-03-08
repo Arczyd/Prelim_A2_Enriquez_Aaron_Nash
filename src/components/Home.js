@@ -9,15 +9,40 @@ export default function Home() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white p-6 rounded-lg shadow-md w-80 text-center">
-        <h2 className="text-xl font-semibold mb-4">Welcome, {user.email}!</h2>
-        <button
-          className="w-full bg-red-500 text-white p-2 rounded"
-          onClick={handleLogout}
-        >
-          Logout
-        </button>
+    <div>
+      {/* Navbar */}
+      <nav className="navbar navbar-expand-lg navbar-light bg-light px-4">
+        <a className="navbar-brand" href="#">
+          MyApp
+        </a>
+        <ul className="navbar-nav ml-auto">
+          <li className="nav-item">
+            <a className="nav-link" href="#">
+              Home
+            </a>
+          </li>
+          <li className="nav-item">
+            <a className="nav-link" href="#">
+              Profile
+            </a>
+          </li>
+          <li className="nav-item">
+            <a className="nav-link" href="#">
+              Settings
+            </a>
+          </li>
+          <li className="nav-item">
+            <button className="btn btn-danger" onClick={handleLogout}>
+              Logout
+            </button>
+          </li>
+        </ul>
+      </nav>
+
+      {/* Welcome Message */}
+      <div className="container text-center mt-5">
+        <h2>Welcome, {user.username}!</h2>
+        <p>This is your dashboard.</p>
       </div>
     </div>
   );

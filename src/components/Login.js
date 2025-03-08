@@ -1,53 +1,66 @@
 import React, { useState } from "react";
 
 export default function Login({ switchMode }) {
-  const [email, setEmail] = useState("");
+  const [identifier, setIdentifier] = useState(""); // Username or Email
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
 
   const handleLogin = () => {
-    const users = JSON.parse(localStorage.getItem("users")) || [];
-    const user = users.find(
-      (u) => u.email === email && u.password === password
-    );
-    if (user) {
-      localStorage.setItem("loggedInUser", JSON.stringify(user));
-      window.location.reload();
-    } else {
-      setError("Invalid credentials");
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+
+    if (!identifier || !password) {
+      alert("Please fill in all fields.");
+      return;
     }
+
+    const user = users.find(
+      (user) => user.email === identifier || user.username === identifier
+    );
+
+    if (!user) {
+      alert("Account not found.");
+      return;
+    }
+
+    if (user.password !== password) {
+      alert("Incorrect password.");
+      return;
+    }
+
+    localStorage.setItem("loggedInUser", JSON.stringify(user));
+    alert("Login successful!");
+    window.location.reload();
   };
 
   return (
-    <div>
-      <h2 className="text-xl font-semibold mb-4">Login</h2>
-      {error && <p className="text-red-500">{error}</p>}
-      <input
-        type="email"
-        placeholder="Email"
-        className="w-full p-2 border rounded mb-2"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        className="w-full p-2 border rounded mb-2"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button
-        className="w-full bg-blue-500 text-white p-2 rounded"
-        onClick={handleLogin}
-      >
-        Login
-      </button>
-      <p className="mt-2 text-sm">
-        Don't have an account?{" "}
-        <span className="text-blue-500 cursor-pointer" onClick={switchMode}>
-          Register
-        </span>
-      </p>
+    <div className="container mt-5">
+      <div className="card p-4 shadow">
+        <h3 className="text-center">Login</h3>
+        <input
+          type="text"
+          className="form-control my-2"
+          placeholder="Username or Email"
+          onChange={(e) => setIdentifier(e.target.value)}
+        />
+        <input
+          type="password"
+          className="form-control my-2"
+          placeholder="Password"
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button className="btn btn-success w-100 mt-2" onClick={handleLogin}>
+          Login
+        </button>
+        <p className="text-center mt-3">
+          Don't have an account?{" "}
+          <span
+            className="text-primary"
+            style={{ cursor: "pointer" }}
+            onClick={switchMode}
+          >
+            Register
+          </span>
+        </p>
+      </div>
     </div>
   );
 }
