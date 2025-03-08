@@ -1,5 +1,4 @@
 import React from "react";
-import Footer from "./Footer"; // Import the Footer component
 
 export default function Home({ darkMode }) {
   return (

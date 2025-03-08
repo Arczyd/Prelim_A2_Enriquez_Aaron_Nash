@@ -21,7 +21,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [profilePic, setProfilePic] = useState("");
-  const [username, setUsername] = useState(""); // New state for username
+  const [username, setUsername] = useState("");
   const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
@@ -29,7 +29,7 @@ export default function App() {
     if (user) {
       setIsLoggedIn(true);
       setProfilePic(user.profilePic || "");
-      setUsername(user.username || ""); // Set username from user object
+      setUsername(user.username || "");
     }
 
     const storedDarkMode = JSON.parse(localStorage.getItem("darkMode"));
@@ -42,14 +42,14 @@ export default function App() {
     localStorage.setItem("loggedInUser   ", JSON.stringify(user));
     setIsLoggedIn(true);
     setProfilePic(user.profilePic || "");
-    setUsername(user.username || ""); // Set username on login
+    setUsername(user.username || "");
   };
 
   const handleLogout = () => {
     localStorage.removeItem("loggedInUser   ");
     setIsLoggedIn(false);
     setProfilePic("");
-    setUsername(""); // Clear username on logout
+    setUsername("");
   };
 
   const toggleDarkMode = () => {
@@ -65,7 +65,7 @@ export default function App() {
         onLogin={handleLogin}
         onLogout={handleLogout}
         profilePic={profilePic}
-        username={username} // Pass username to MainContent
+        username={username}
         setProfilePic={setProfilePic}
         darkMode={darkMode}
         toggleDarkMode={toggleDarkMode}
@@ -79,7 +79,7 @@ function MainContent({
   onLogin,
   onLogout,
   profilePic,
-  username, // Receive username
+  username,
   setProfilePic,
   darkMode,
   toggleDarkMode,
@@ -103,13 +103,16 @@ function MainContent({
       {isLoggedIn && (
         <Navbar
           profilePic={profilePic}
-          username={username} // Pass username to Navbar
+          username={username}
           onLogout={onLogout}
           darkMode={darkMode}
         />
       )}
       <Routes>
-        <Route path="/" element={isLoggedIn ? <Navigate to="/home" replace /> : <Intro />} />
+        <Route
+          path="/"
+          element={isLoggedIn ? <Navigate to="/home" replace /> : <Intro />}
+        />
         <Route
           path="/login"
           element={
@@ -127,13 +130,7 @@ function MainContent({
         />
         <Route
           path="/register"
-          element={
-            isLoggedIn ? (
-              <Navigate to="/home" replace />
-            ) : (
-              <Register />
-            )
-          }
+          element={isLoggedIn ? <Navigate to="/home" replace /> : <Register />}
         />
         <Route
           path="/home"
@@ -149,7 +146,11 @@ function MainContent({
           path="/profile"
           element={
             isLoggedIn ? (
-              <Profile setProfilePic={setProfilePic} profilePic={profilePic} darkMode={darkMode} />
+              <Profile
+                setProfilePic={setProfilePic}
+                profilePic={profilePic}
+                darkMode={darkMode}
+              />
             ) : (
               <Navigate to="/login" replace />
             )

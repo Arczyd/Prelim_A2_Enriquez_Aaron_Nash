@@ -6,8 +6,8 @@ export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false); // State for password visibility
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false); // State for confirm password visibility
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
@@ -24,8 +24,8 @@ export default function Register() {
       return;
     }
 
-    const newUser  = { username, email, password };
-    localStorage.setItem("users", JSON.stringify([...users, newUser ]));
+    const newUser = { username, email, password };
+    localStorage.setItem("users", JSON.stringify([...users, newUser]));
     alert("Account created! Please log in.");
     navigate("/login");
   };
@@ -52,7 +52,7 @@ export default function Register() {
         />
         <div className="input-group mb-3">
           <input
-            type={showPassword ? "text" : "password"} // Toggle password visibility
+            type={showPassword ? "text" : "password"}
             className="form-control"
             placeholder="Password"
             required
@@ -62,14 +62,14 @@ export default function Register() {
           <button
             className="btn btn-outline-secondary"
             type="button"
-            onClick={() => setShowPassword(!showPassword)} // Toggle showPassword state
+            onClick={() => setShowPassword(!showPassword)}
           >
             {showPassword ? "Hide" : "Show"}
           </button>
         </div>
         <div className="input-group mb-3">
           <input
-            type={showConfirmPassword ? "text" : "password"} // Toggle confirm password visibility
+            type={showConfirmPassword ? "text" : "password"}
             className="form-control"
             placeholder="Confirm Password"
             required
@@ -79,7 +79,7 @@ export default function Register() {
           <button
             className="btn btn-outline-secondary"
             type="button"
-            onClick={() => setShowConfirmPassword(!showConfirmPassword)} // Toggle showConfirmPassword state
+            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
           >
             {showConfirmPassword ? "Hide" : "Show"}
           </button>

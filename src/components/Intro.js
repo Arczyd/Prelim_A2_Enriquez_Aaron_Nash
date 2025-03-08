@@ -17,9 +17,9 @@ export default function Intro() {
         together.
       </p>
       <button
-        type="button" // Ensure the button type is set to "button"
+        type="button"
         className="btn btn-primary mt-3 rounded-pill px-5 py-3 shadow-lg fs-4"
-        onClick={() => navigate("/login")} // Use navigate to go to the login page
+        onClick={() => navigate("/login")}
       >
         CONTINUE
       </button>

@@ -12,7 +12,7 @@ export default function Profile({ setProfilePic, profilePic, darkMode }) {
     profilePic: "",
   });
 
-  const [originalUser, setOriginalUser] = useState({}); // Store original user data
+  const [originalUser, setOriginalUser] = useState({});
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -25,7 +25,7 @@ export default function Profile({ setProfilePic, profilePic, darkMode }) {
     const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser   "));
     if (loggedInUser) {
       setUser(loggedInUser);
-      setOriginalUser(loggedInUser); // Set original user data
+      setOriginalUser(loggedInUser);
     }
   }, []);
 
@@ -42,7 +42,7 @@ export default function Profile({ setProfilePic, profilePic, darkMode }) {
           ...prevUser,
           profilePic: reader.result,
         }));
-        setProfilePic(reader.result); // Update profile picture in Navbar
+        setProfilePic(reader.result);
       };
       reader.readAsDataURL(file);
     }
@@ -61,12 +61,11 @@ export default function Profile({ setProfilePic, profilePic, darkMode }) {
   };
 
   const handleSave = () => {
-    // Confirm before saving changes
     const confirmSave = window.confirm(
       "Are you sure you want to save changes?"
     );
     if (!confirmSave) {
-      return; // User canceled the save operation
+      return;
     }
 
     if (!user.username || !user.email) {
@@ -100,7 +99,6 @@ export default function Profile({ setProfilePic, profilePic, darkMode }) {
 
     setMessage("Profile updated successfully!");
 
-    // Refresh the page after saving changes
     window.location.reload();
   };
 
@@ -113,7 +111,6 @@ export default function Profile({ setProfilePic, profilePic, darkMode }) {
       <div className="container mt-5 pt-5 pb-5">
         <h2 className="text-center mb-4">Edit Profile</h2>
 
-        {/* Profile Picture Section */}
         <div className="text-center mb-4">
           <img
             src={

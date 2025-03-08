@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 export default function Login({ onLogin }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false); // State for password visibility
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = (e) => {
@@ -16,9 +16,9 @@ export default function Login({ onLogin }) {
     );
 
     if (user) {
-      localStorage.setItem("loggedInUser ", JSON.stringify(user)); // Save logged-in user
+      localStorage.setItem("loggedInUser ", JSON.stringify(user));
       onLogin(user);
-      alert("Login successful!"); // ✅ Show successful login popup
+      alert("Login successful!");
       navigate("/home");
     } else {
       alert("Invalid email/username or password.");
@@ -39,7 +39,7 @@ export default function Login({ onLogin }) {
         />
         <div className="input-group mb-3">
           <input
-            type={showPassword ? "text" : "password"} // Toggle password visibility
+            type={showPassword ? "text" : "password"}
             className="form-control"
             placeholder="Password"
             required
@@ -49,7 +49,7 @@ export default function Login({ onLogin }) {
           <button
             className="btn btn-outline-secondary"
             type="button"
-            onClick={() => setShowPassword(!showPassword)} // Toggle showPassword state
+            onClick={() => setShowPassword(!showPassword)}
           >
             {showPassword ? "Hide" : "Show"}
           </button>

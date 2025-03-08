@@ -4,10 +4,7 @@ const Settings = ({ darkMode, toggleDarkMode }) => {
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [language, setLanguage] = useState("English");
 
-  // On theme change, update dark mode logic
-  useEffect(() => {
-    // This effect is not needed if you are directly using toggleDarkMode
-  }, [darkMode]);
+  useEffect(() => {}, [darkMode]);
 
   const handleSaveSettings = () => {
     alert("Settings saved successfully!");
@@ -26,7 +23,6 @@ const Settings = ({ darkMode, toggleDarkMode }) => {
             <strong>App Settings</strong>
           </h2>
 
-          {/* Dark Mode Toggle */}
           <div className="mb-4">
             <h4>Theme Settings</h4>
             <div className="form-check form-switch">
@@ -36,7 +32,7 @@ const Settings = ({ darkMode, toggleDarkMode }) => {
                 role="switch"
                 id="darkModeSwitch"
                 checked={darkMode}
-                onChange={toggleDarkMode} // This should directly toggle dark mode
+                onChange={toggleDarkMode}
               />
               <label className="form-check-label" htmlFor="darkModeSwitch">
                 Enable Dark Mode
@@ -44,7 +40,6 @@ const Settings = ({ darkMode, toggleDarkMode }) => {
             </div>
           </div>
 
-          {/* Language Settings */}
           <div className="mb-4">
             <h4>Language Preferences</h4>
             <label htmlFor="language" className="form-label">
@@ -64,7 +59,6 @@ const Settings = ({ darkMode, toggleDarkMode }) => {
             </select>
           </div>
 
-          {/* Notification Preferences */}
           <div className="mb-4">
             <h4>Notification Settings</h4>
             <div className="form-check form-switch">

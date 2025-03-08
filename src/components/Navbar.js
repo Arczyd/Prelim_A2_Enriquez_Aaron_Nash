@@ -7,8 +7,8 @@ export default function Navbar({ profilePic, username, onLogout, darkMode }) {
   const handleLogout = () => {
     const confirmLogout = window.confirm("Are you sure you want to logout?");
     if (confirmLogout) {
-      onLogout(); // Call the logout function passed as a prop
-      navigate("/"); // Redirect to the root URL
+      onLogout();
+      navigate("/");
     }
   };
 
@@ -42,7 +42,6 @@ export default function Navbar({ profilePic, username, onLogout, darkMode }) {
           </Link>
 
           <div className="d-flex align-items-center">
-            {/* Display the profile picture or a default icon */}
             <img
               src={profilePic || "https://via.placeholder.com/40"}
               alt="Profile"
@@ -53,7 +52,7 @@ export default function Navbar({ profilePic, username, onLogout, darkMode }) {
             {username && <span className={`me-2 ${darkMode ? "text-white" : "text-dark"}`}>{username}</span>}
             <button
               className={`btn btn-sm ${darkMode ? "btn-light" : "btn-dark"}`}
-              onClick={handleLogout} // Use the new handleLogout function
+              onClick={handleLogout}
             >
               Logout
             </button>
