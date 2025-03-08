@@ -1,40 +1,60 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
 
-export default function Navbar({ onLogout, profilePic }) {
-  const [user, setUser] = useState({ username: "" });
+export default function Navbar({ profilePic, username, onLogout, darkMode }) {
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser "));
-    if (loggedInUser) setUser(loggedInUser);
-  }, []);
+  const handleLogout = () => {
+    const confirmLogout = window.confirm("Are you sure you want to logout?");
+    if (confirmLogout) {
+      onLogout(); // Call the logout function passed as a prop
+      navigate("/"); // Redirect to the root URL
+    }
+  };
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light shadow-sm fixed-top px-4">
+    <nav
+      className={`navbar navbar-expand-lg ${
+        darkMode ? "navbar-dark bg-dark" : "navbar-light bg-light"
+      } shadow-sm fixed-top px-4`}
+    >
       <div className="container-fluid">
         <span className="navbar-brand fw-bold">AST</span>
 
         <div className="ms-auto d-flex align-items-center">
-          <Link to="/home" className="nav-link me-3">
+          <Link
+            to="/home"
+            className={`nav-link me-3 ${darkMode ? "text-white" : "text-dark"}`}
+          >
             Home
           </Link>
-          <Link to="/profile" className="nav-link me-3">
+          <Link
+            to="/profile"
+            className={`nav-link me-3 ${darkMode ? "text-white" : "text-dark"}`}
+          >
             Profile
           </Link>
-          <Link to="/settings" className="nav-link me-3">
+          <Link
+            to="/settings"
+            className={`nav-link me-3 ${darkMode ? "text-white" : "text-dark"}`}
+          >
             Settings
           </Link>
 
           <div className="d-flex align-items-center">
+            {/* Display the profile picture or a default icon */}
             <img
-              src={profilePic || "https://via.placeholder.com/50"}
+              src={profilePic || "https://via.placeholder.com/40"}
               alt="Profile"
               className="rounded-circle me-2"
               width="40"
               height="40"
             />
-            <span className="fw-bold me-3">{user.username || "Guest"}</span>
-            <button className="btn btn-danger btn-sm" onClick={onLogout}>
+            {username && <span className={`me-2 ${darkMode ? "text-white" : "text-dark"}`}>{username}</span>}
+            <button
+              className={`btn btn-sm ${darkMode ? "btn-light" : "btn-dark"}`}
+              onClick={handleLogout} // Use the new handleLogout function
+            >
               Logout
             </button>
           </div>

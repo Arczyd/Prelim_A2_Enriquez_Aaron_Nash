@@ -6,6 +6,8 @@ export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false); // State for password visibility
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false); // State for confirm password visibility
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
@@ -22,8 +24,8 @@ export default function Register() {
       return;
     }
 
-    const newUser = { username, email, password };
-    localStorage.setItem("users", JSON.stringify([...users, newUser]));
+    const newUser  = { username, email, password };
+    localStorage.setItem("users", JSON.stringify([...users, newUser ]));
     alert("Account created! Please log in.");
     navigate("/login");
   };
@@ -48,22 +50,40 @@ export default function Register() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        <input
-          type="password"
-          className="form-control mb-3"
-          placeholder="Password"
-          required
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <input
-          type="password"
-          className="form-control mb-3"
-          placeholder="Confirm Password"
-          required
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-        />
+        <div className="input-group mb-3">
+          <input
+            type={showPassword ? "text" : "password"} // Toggle password visibility
+            className="form-control"
+            placeholder="Password"
+            required
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <button
+            className="btn btn-outline-secondary"
+            type="button"
+            onClick={() => setShowPassword(!showPassword)} // Toggle showPassword state
+          >
+            {showPassword ? "Hide" : "Show"}
+          </button>
+        </div>
+        <div className="input-group mb-3">
+          <input
+            type={showConfirmPassword ? "text" : "password"} // Toggle confirm password visibility
+            className="form-control"
+            placeholder="Confirm Password"
+            required
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+          />
+          <button
+            className="btn btn-outline-secondary"
+            type="button"
+            onClick={() => setShowConfirmPassword(!showConfirmPassword)} // Toggle showConfirmPassword state
+          >
+            {showConfirmPassword ? "Hide" : "Show"}
+          </button>
+        </div>
         <button type="submit" className="btn btn-primary w-100 rounded-pill">
           Register
         </button>

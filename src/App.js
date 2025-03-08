@@ -5,7 +5,7 @@ import {
   Routes,
   useNavigate,
   useLocation,
-  Navigate, // Import Navigate here
+  Navigate,
 } from "react-router-dom";
 import Intro from "./components/Intro";
 import Login from "./components/Login";
@@ -13,31 +13,49 @@ import Register from "./components/Register";
 import Home from "./components/Home";
 import Profile from "./components/Profile";
 import Navbar from "./components/Navbar";
+import Settings from "./components/Settings";
+import Footer from "./components/Footer";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [profilePic, setProfilePic] = useState(""); // Add profilePic state
+  const [profilePic, setProfilePic] = useState("");
+  const [username, setUsername] = useState(""); // New state for username
+  const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("loggedInUser "));
+    const user = JSON.parse(localStorage.getItem("loggedInUser   "));
     if (user) {
       setIsLoggedIn(true);
-      setProfilePic(user.profilePic || ""); // Load profile picture from localStorage
+      setProfilePic(user.profilePic || "");
+      setUsername(user.username || ""); // Set username from user object
+    }
+
+    const storedDarkMode = JSON.parse(localStorage.getItem("darkMode"));
+    if (storedDarkMode !== null) {
+      setDarkMode(storedDarkMode);
     }
   }, []);
 
   const handleLogin = (user) => {
-    localStorage.setItem("loggedInUser ", JSON.stringify(user));
+    localStorage.setItem("loggedInUser   ", JSON.stringify(user));
     setIsLoggedIn(true);
-    setProfilePic(user.profilePic || ""); // Ensure profile picture is updated
+    setProfilePic(user.profilePic || "");
+    setUsername(user.username || ""); // Set username on login
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("loggedInUser ");
+    localStorage.removeItem("loggedInUser   ");
     setIsLoggedIn(false);
-    setProfilePic(""); // Reset profile picture on logout
+    setProfilePic("");
+    setUsername(""); // Clear username on logout
+  };
+
+  const toggleDarkMode = () => {
+    const newDarkMode = !darkMode;
+    setDarkMode(newDarkMode);
+    localStorage.setItem("darkMode", JSON.stringify(newDarkMode));
   };
 
   return (
@@ -47,7 +65,10 @@ export default function App() {
         onLogin={handleLogin}
         onLogout={handleLogout}
         profilePic={profilePic}
-        setProfilePic={setProfilePic} // Pass to child components
+        username={username} // Pass username to MainContent
+        setProfilePic={setProfilePic}
+        darkMode={darkMode}
+        toggleDarkMode={toggleDarkMode}
       />
     </Router>
   );
@@ -58,7 +79,10 @@ function MainContent({
   onLogin,
   onLogout,
   profilePic,
+  username, // Receive username
   setProfilePic,
+  darkMode,
+  toggleDarkMode,
 }) {
   const location = useLocation();
   const navigate = useNavigate();
@@ -76,36 +100,74 @@ function MainContent({
 
   return (
     <>
-      {isLoggedIn && <Navbar profilePic={profilePic} onLogout={onLogout} />}
+      {isLoggedIn && (
+        <Navbar
+          profilePic={profilePic}
+          username={username} // Pass username to Navbar
+          onLogout={onLogout}
+          darkMode={darkMode}
+        />
+      )}
       <Routes>
-        <Route path="/" element={<Intro />} />
+        <Route path="/" element={isLoggedIn ? <Navigate to="/home" replace /> : <Intro />} />
         <Route
           path="/login"
           element={
-            <Login
-              onLogin={(user) => {
-                onLogin(user);
-                navigate("/home");
-              }}
-            />
+            isLoggedIn ? (
+              <Navigate to="/home" replace />
+            ) : (
+              <Login
+                onLogin={(user) => {
+                  onLogin(user);
+                  navigate("/home");
+                }}
+              />
+            )
           }
         />
-        <Route path="/register" element={<Register />} />
+        <Route
+          path="/register"
+          element={
+            isLoggedIn ? (
+              <Navigate to="/home" replace />
+            ) : (
+              <Register />
+            )
+          }
+        />
         <Route
           path="/home"
-          element={isLoggedIn ? <Home /> : <Navigate to="/login" />}
+          element={
+            isLoggedIn ? (
+              <Home darkMode={darkMode} />
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
         />
         <Route
           path="/profile"
           element={
             isLoggedIn ? (
-              <Profile setProfilePic={setProfilePic} profilePic={profilePic} />
+              <Profile setProfilePic={setProfilePic} profilePic={profilePic} darkMode={darkMode} />
             ) : (
-              <Navigate to="/login" /> // Redirect to login if not logged in
+              <Navigate to="/login" replace />
+            )
+          }
+        />
+        <Route
+          path="/settings"
+          element={
+            isLoggedIn ? (
+              <Settings darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
+            ) : (
+              <Navigate to="/login" replace />
             )
           }
         />
       </Routes>
+      {/* Footer */}
+      <Footer darkMode={darkMode} />
     </>
   );
 }

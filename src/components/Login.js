@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 export default function Login({ onLogin }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false); // State for password visibility
   const navigate = useNavigate();
 
   const handleLogin = (e) => {
@@ -15,7 +16,7 @@ export default function Login({ onLogin }) {
     );
 
     if (user) {
-      localStorage.setItem("loggedInUser", JSON.stringify(user)); // Save logged-in user
+      localStorage.setItem("loggedInUser ", JSON.stringify(user)); // Save logged-in user
       onLogin(user);
       alert("Login successful!"); // ✅ Show successful login popup
       navigate("/home");
@@ -36,14 +37,23 @@ export default function Login({ onLogin }) {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        <input
-          type="password"
-          className="form-control mb-3"
-          placeholder="Password"
-          required
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        <div className="input-group mb-3">
+          <input
+            type={showPassword ? "text" : "password"} // Toggle password visibility
+            className="form-control"
+            placeholder="Password"
+            required
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <button
+            className="btn btn-outline-secondary"
+            type="button"
+            onClick={() => setShowPassword(!showPassword)} // Toggle showPassword state
+          >
+            {showPassword ? "Hide" : "Show"}
+          </button>
+        </div>
         <button type="submit" className="btn btn-primary w-100 rounded-pill">
           Login
         </button>
